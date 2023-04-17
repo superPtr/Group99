@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 using namespace std;
 
 const int Max_Size = 100;
@@ -11,13 +12,43 @@ struct User {
 	string email;
 };
 
+struct Flight {
+	string flight_id;
+	string from_location;
+	string to_location;
+	string departure_day;
+	string departure_time;
+	string arrival_time;
+	string flight_duration;
+	string flight_price_eco;
+	string numSeats_eco;
+	string flight_price_bus;
+	string numSeats_bus;
+};
+
+struct Record {
+	string ticket_id;
+	string class_id;
+	Flight flightInfo;
+	// string purchased_day
+	string payment_status;
+	string name;
+	string contact_num;
+	string email;
+};
+
 int main_menu(int& option);
+void user_menu(User user);
 void user_register();
 void user_login();
 bool isValidNameOrPass(string nameOrPass);
 bool isValidEmail(const User& user);
 bool avoidSame(string nameOrEmail, const User(&userLists)[Max_Size]);
 void grabUser(User(&userLists)[Max_Size]);
+void grabFlight(Flight (&flightLists)[Max_Size], string fileName, bool goPrint);
+void grabRecord(Record (&recordLists)[Max_Size], string fileName, bool goPrint, string email);
+string toLower(string keyword);
+void user_search();
 
 int main() {
 	int option = 0;
@@ -33,6 +64,12 @@ int main() {
 			user_login();
 		}
 		else if (option == 3) {
+			// View the FLight Info
+		}
+		else if (option == 4) {
+			// Admin Login
+		}
+		else if (option == 5) {
 			chkpoint = true;
 		}
 		else {
@@ -41,26 +78,64 @@ int main() {
 
 	} while (chkpoint == false);
 
-	if (option == 1) {
-		user_register();
-	}
-	else if (option == 2) {
-		user_login();
-	}
 
 	return 0;
 }
 
 int main_menu(int& option) {
 	cout << "Menu: " << endl;
-	cout << "1. Register" << endl;
-	cout << "2. Login" << endl;
-	cout << "3. Exit" << endl;
+	cout << "1. Non-User Register" << endl;
+	cout << "2. User Login" << endl;
+	cout << "3. View Flight Info" << endl;
+	cout << "4. Admin Login" << endl;
+	cout << "5. Exit" << endl;
 	cout << "\nEnter your option: ";
 	cin >> option;
 	cout << endl;
 
 	return option;
+}
+
+void user_menu(User user) {	// User user is current user's info
+	int choice;
+	bool chkpoint = false;
+	User currUser;
+	currUser.email = user.email;
+	Flight flightLists[Max_Size];;
+	Record recordLists[Max_Size]; 
+
+	do{
+		cout << "1. View Flight Info" << endl;
+		cout << "2. Search Flight" << endl;
+		cout << "3. Booking Flight" << endl;
+		cout << "4. View Booking/Purchased History" << endl;
+		cout << "5. Logout" << endl;
+		cout << "\nEnter your option: ";
+		cin >> choice;
+		cout << endl;
+
+		switch (choice)
+		{
+		case 1:		// View Flight
+			grabFlight(flightLists, "flight.txt", true);
+			break;
+		case 2:		// Search
+			user_search();
+			break;
+		case 3:		// Booking
+			break;
+		case 4:		// View History
+			grabRecord(recordLists, "record.txt", false, currUser.email);
+			break;
+		case 5:
+			chkpoint = true;
+			break;
+		default:
+			cout << "Please Enter the Valid Choice." << endl;
+			break;
+		}
+	}while (chkpoint == false);
+	
 }
 
 void user_register() {
@@ -120,14 +195,19 @@ void user_login() {
 	for (int i = 0; i < listLength; i++) {
 		if ((loginCred.username == userLists[i].username) && (loginCred.password == userLists[i].password)) {
 			chkLog = true;
+			User currentUser;
+			currentUser.username = userLists[i].username;
+			currentUser.email = userLists[i].email;
 			cout << "Successfuly Login!" << endl;
-			break;
+			user_menu(currentUser);
 		}
 	}
 
 	if (chkLog == false) {
 		cout << "Username or Password is incorrect, please try again!" << endl;
 	}
+
+
 }
 
 bool isValidNameOrPass(string nameOrPass) {
@@ -200,4 +280,200 @@ void grabUser(User(&userLists)[Max_Size]) {
 	}
 
 	inFile.close();
+}
+
+void grabFlight(Flight (&flightLists)[Max_Size], string fileName, bool goPrint) {
+	ifstream inFile;
+	inFile.open(fileName);
+
+	int count = 0;
+
+	if (inFile.fail()) {
+		cout << "Unable to Read Data!" << endl;
+	}
+	else {
+		while (!inFile.eof()) {
+			getline(inFile, flightLists[count].flight_id, '|');
+			getline(inFile, flightLists[count].from_location, '|');
+			getline(inFile, flightLists[count].to_location, '|');
+			getline(inFile, flightLists[count].departure_day, '|');
+			getline(inFile, flightLists[count].departure_time, '|');
+			getline(inFile, flightLists[count].arrival_time, '|');
+			getline(inFile, flightLists[count].flight_duration, '|');
+			getline(inFile, flightLists[count].flight_price_eco, '|');
+			getline(inFile, flightLists[count].numSeats_eco, '|');
+			getline(inFile, flightLists[count].flight_price_bus, '|');
+			getline(inFile, flightLists[count].numSeats_bus, '|');
+
+			inFile.ignore(256, '\n');
+
+			count++;
+		}
+		if(goPrint == true){
+			for (int i = 0; i < (count - 1); i++) {
+				cout << setw(8) << left << flightLists[i].flight_id;
+				cout << setw(12) << left << flightLists[i].from_location;
+				cout << setw(12) << left << flightLists[i].to_location;
+				cout << setw(10) << left << flightLists[i].departure_day;
+				cout << setw(6) << left << flightLists[i].departure_time;
+				cout << setw(6) << left << flightLists[i].arrival_time;
+				cout << setw(14) << left << flightLists[i].flight_duration;
+				cout << setw(9) << left << flightLists[i].flight_price_eco;
+				cout << setw(10) << left << flightLists[i].numSeats_eco;
+				cout << setw(9) << left << flightLists[i].flight_price_bus;
+				cout << setw(10) << left << flightLists[i].numSeats_bus << endl;
+			}
+		}
+	}
+	inFile.close();
+}
+
+void grabRecord(Record (&recordLists)[Max_Size], string fileName, bool goPrint, string email) {
+	ifstream inFile;
+	inFile.open(fileName);
+
+	int count = 0;
+
+	if (inFile.fail()) {
+		cout << "Unable Read the Data!" << endl;
+	}
+	else {
+		while (!inFile.eof()) {
+			getline(inFile, recordLists[count].ticket_id, '|');
+			getline(inFile, recordLists[count].flightInfo.flight_id, '|');
+			getline(inFile, recordLists[count].class_id, '|');
+			getline(inFile, recordLists[count].flightInfo.departure_time, ':');
+			getline(inFile, recordLists[count].flightInfo.arrival_time, ':');
+			getline(inFile, recordLists[count].flightInfo.flight_duration, '|');
+			getline(inFile, recordLists[count].flightInfo.departure_day, '|');
+			getline(inFile, recordLists[count].payment_status, '|');
+			getline(inFile, recordLists[count].name, '|');
+			getline(inFile, recordLists[count].contact_num, '|');
+			getline(inFile, recordLists[count].email, '|');
+
+			inFile.ignore(256, '\n');
+			count++;
+		}
+
+		if (goPrint == true) {
+			for (int i = 0; i < (count - 1); i++) {
+				cout << setw(10) << left << recordLists[i].ticket_id;
+				cout << setw(8) << left << recordLists[i].flightInfo.flight_id;
+				cout << setw(4) << left << recordLists[i].class_id;
+				cout << setw(10) << left << recordLists[i].flightInfo.departure_time;
+				cout << setw(6) << left << recordLists[i].flightInfo.arrival_time;
+				cout << setw(6) << left << recordLists[i].flightInfo.flight_duration;
+				cout << setw(10) << left << recordLists[i].flightInfo.departure_day;
+				cout << setw(20) << left << recordLists[i].name;
+				cout << setw(12) << left << recordLists[i].contact_num;
+				cout << setw(20) << left << recordLists[i].email << endl;
+
+			}
+		}
+		else if ((goPrint == false) && (email != "0")) {
+			bool chkEmpty = true;
+			string searchByEmail = email;
+			for (int j = 0; j < (count - 1); j++) {
+				if (recordLists[j].email == searchByEmail) {
+					cout << setw(10) << left << recordLists[j].ticket_id;
+					cout << setw(8) << left << recordLists[j].flightInfo.flight_id;
+					cout << setw(4) << left << recordLists[j].class_id;
+					cout << setw(10) << left << recordLists[j].flightInfo.departure_time;
+					cout << setw(6) << left << recordLists[j].flightInfo.arrival_time;
+					cout << setw(6) << left << recordLists[j].flightInfo.flight_duration;
+					cout << setw(10) << left << recordLists[j].flightInfo.departure_day;
+					cout << setw(20) << left << recordLists[j].name;
+					cout << setw(12) << left << recordLists[j].contact_num;
+					cout << setw(20) << left << recordLists[j].email << endl;
+
+					chkEmpty = false;
+				}
+			}
+			if (chkEmpty == true) {
+				cout << "Your purchased history is empty." << endl;
+			}
+		}
+	}
+	inFile.close();
+}
+
+string toLower(string keyword) {
+	string words = keyword;
+
+	for (int i = 0; i < words.length(); i++) {
+		if ((words[i] >= 'A') && (words[i] <= 'Z')) {
+			words[i] = words[i] - 'A' + 'a';
+		}
+	}
+
+	return words;
+}
+
+void user_search() {
+	Flight flightLists[Max_Size];
+	grabFlight(flightLists, "flight.txt", false);
+
+	string keyword;
+	int option;
+
+	cout << "Search for:" << endl;
+	cout << "1. Departure Location" << endl;
+	cout << "2. Arrival Loction" << endl;
+	cout << "Enter option: ";
+	cin >> option;
+
+	if (option == 1) {
+		cout << "Enter location: ";
+		cin >> keyword;
+		cout << endl;
+		bool flag = false;
+		for (int j = 0; j < Max_Size; j++) {
+			if ((toLower(keyword)) == (toLower(flightLists[j].from_location))) {
+				cout << setw(8) << left << flightLists[j].flight_id;
+				cout << setw(12) << left << flightLists[j].from_location;
+				cout << setw(12) << left << flightLists[j].to_location;
+				cout << setw(10) << left << flightLists[j].departure_time;
+				cout << setw(6) << left << flightLists[j].arrival_time;
+				cout << setw(14) << left << flightLists[j].flight_duration;
+				cout << setw(9) << left << flightLists[j].flight_price_eco;
+				cout << setw(10) << left << flightLists[j].numSeats_eco;
+				cout << setw(9) << left << flightLists[j].flight_price_bus;
+				cout << setw(10) << left << flightLists[j].numSeats_bus << endl;
+
+				flag = true;
+			}
+		}
+
+		if (flag == false) {
+			cout << "There is no such location provided by us!" << endl;
+		}
+	}
+	else if (option == 2) {
+		cout << "Enter location: ";
+		cin >> keyword;
+		cout << endl;
+		bool flag = false;
+
+		for (int j = 0; j < Max_Size; j++) {
+			if ((toLower(keyword)) == (toLower(flightLists[j].to_location))) {
+				cout << setw(8) << left << flightLists[j].flight_id;
+				cout << setw(12) << left << flightLists[j].from_location;
+				cout << setw(12) << left << flightLists[j].to_location;
+				cout << setw(10) << left << flightLists[j].departure_time;
+				cout << setw(6) << left << flightLists[j].arrival_time;
+				cout << setw(14) << left << flightLists[j].flight_duration;
+				cout << setw(9) << left << flightLists[j].flight_price_eco;
+				cout << setw(10) << left << flightLists[j].numSeats_eco;
+				cout << setw(9) << left << flightLists[j].flight_price_bus;
+				cout << setw(10) << left << flightLists[j].numSeats_bus << endl;
+
+				flag = true;
+			}
+		}
+
+		if (flag == false) {
+			cout << "There is no such location provided by us!" << endl;
+		}
+	}
+
 }
