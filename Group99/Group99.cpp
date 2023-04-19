@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+#include <Windows.h> //decoration purpose - system
+#include <stdio.h> //decoration purpose - printf
 using namespace std;
 
 const int Max_Size = 100;
@@ -49,6 +51,8 @@ void grabFlight(Flight (&flightLists)[Max_Size], string fileName, bool goPrint);
 void grabRecord(Record (&recordLists)[Max_Size], string fileName, bool goPrint, string email);
 string toLower(string keyword);
 void user_search();
+// decorations
+void loadingBar();
 
 int main() {
 	int option = 0;
@@ -117,6 +121,7 @@ void user_menu(User user) {	// User user is current user's info
 		switch (choice)
 		{
 		case 1:		// View Flight
+			loadingBar();
 			grabFlight(flightLists, "flight.txt", true);
 			break;
 		case 2:		// Search
@@ -476,4 +481,32 @@ void user_search() {
 		}
 	}
 
+}
+
+void loadingBar() {
+	system("COLOR 0e");
+	system("cls");
+	//printf("\e[?25l");
+
+	//Set ASCII to print special character.
+	//Code page 437
+	SetConsoleCP(437);
+	SetConsoleOutputCP(437);
+	int bar1 = 177, bar2 = 219;
+
+	cout << "\n\n\n\t\t\t\tLoading...";
+	cout << "\n\n\n\t\t\t\t";
+
+	for (int i = 0; i < 25; i++)
+		cout << (char)bar1;
+
+	cout << "\r";
+	cout << "\t\t\t\t";
+	for (int i = 0; i < 25; i++)
+	{
+		cout << (char)bar2;
+		Sleep(150);
+	}
+
+	cout << endl;
 }
