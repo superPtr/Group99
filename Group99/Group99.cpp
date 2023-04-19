@@ -51,10 +51,12 @@ void grabFlight(Flight (&flightLists)[Max_Size], string fileName, bool goPrint);
 void grabRecord(Record (&recordLists)[Max_Size], string fileName, bool goPrint, string email);
 string toLower(string keyword);
 void user_search();
+string minToHourMin(string duration);
 // decorations
 void loadingBar();
 
 int main() {
+	system("COLOR 0e");
 	int option = 0;
 	bool chkpoint = false;
 
@@ -68,7 +70,9 @@ int main() {
 			user_login();
 		}
 		else if (option == 3) {
-			// View the FLight Info
+			Flight flightLists[Max_Size];
+			loadingBar();
+			grabFlight(flightLists, "flight.txt", true);
 		}
 		else if (option == 4) {
 			// Admin Login
@@ -174,7 +178,7 @@ void user_register() {
 
 	if (toWrite == true) {
 		outFile << user.username << "|" << user.password << "|" << user.email << "|" << endl;
-		cout << "\nRegistration Successful!" << endl;
+		cout << "Registration Successful!" << endl;
 	}
 	else {
 		cout << "Username or Password is invalid, please try again!" << endl;
@@ -204,6 +208,7 @@ void user_login() {
 			currentUser.username = userLists[i].username;
 			currentUser.email = userLists[i].email;
 			cout << "Successfuly Login!" << endl;
+			cout << endl;
 			user_menu(currentUser);
 		}
 	}
@@ -315,6 +320,18 @@ void grabFlight(Flight (&flightLists)[Max_Size], string fileName, bool goPrint) 
 			count++;
 		}
 		if(goPrint == true){
+			cout <<setw(10)<<left<< "FlightID ";		// flight id
+			cout << left << "From ";		//from_location
+			cout << left << "To ";		//to_location
+			cout << left << "Depart_Day " ;		//departure_day
+			cout << left << "Depart_Time " ;		//arrival_time
+			cout << left << "Arria_Time " ;		//flight_duration
+			cout << left << "Duration " ;		//flight_price_eco
+			cout << left << "Price(Eco) " ;		//numSeats_eco
+			cout << left << "Avai_Seats(Eco)" ;		//flight_price_bus
+			cout << left << "Price(Bus)" ;		//numSeats_bus
+			cout << left << "Avai_Seats(Bus)" << endl;
+			cout << "-----------------------------------------------------------------------------------------------------------------" << endl;
 			for (int i = 0; i < (count - 1); i++) {
 				cout << setw(8) << left << flightLists[i].flight_id;
 				cout << setw(12) << left << flightLists[i].from_location;
@@ -322,7 +339,8 @@ void grabFlight(Flight (&flightLists)[Max_Size], string fileName, bool goPrint) 
 				cout << setw(10) << left << flightLists[i].departure_day;
 				cout << setw(6) << left << flightLists[i].departure_time;
 				cout << setw(6) << left << flightLists[i].arrival_time;
-				cout << setw(14) << left << flightLists[i].flight_duration;
+				string duration = minToHourMin(flightLists[i].flight_duration);
+				cout << setw(14) << left << duration;
 				cout << setw(9) << left << flightLists[i].flight_price_eco;
 				cout << setw(10) << left << flightLists[i].numSeats_eco;
 				cout << setw(9) << left << flightLists[i].flight_price_bus;
@@ -483,6 +501,18 @@ void user_search() {
 
 }
 
+string minToHourMin(string duration) {
+	int hour, min, temp_min;
+	string temp_duration = duration;
+	string flight_duration;
+	temp_min = stoi(duration);
+	hour = temp_min / 60;
+	min = temp_min % 60;
+	flight_duration = to_string(hour) + "hour(s) " + to_string(min) + "min(s)";
+
+	return flight_duration;
+}
+
 void loadingBar() {
 	system("COLOR 0e");
 	system("cls");
@@ -508,5 +538,5 @@ void loadingBar() {
 		Sleep(150);
 	}
 
-	cout << endl;
+	system("cls");
 }
