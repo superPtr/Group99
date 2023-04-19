@@ -41,6 +41,7 @@ struct Record {
 
 int main_menu(int& option);
 void user_menu(User user);
+void admin_menu();
 void user_register();
 void user_login();
 bool isValidNameOrPass(string nameOrPass);
@@ -145,6 +146,45 @@ void user_menu(User user) {	// User user is current user's info
 		}
 	}while (chkpoint == false);
 	
+}
+
+void admin_menu() {
+	int choice;
+	bool chkpoint = false;
+	Flight flightLists[Max_Size];
+	Record recordLists[Max_Size];
+
+	do {
+		cout << "1. View Flight Info" << endl;
+		cout << "2. View Purchased Flight Record" << endl;
+		cout << "3. Search" << endl;
+		cout << "4. Logout" << endl;
+		cout << "\nEnter your option: ";
+		cin >> choice;
+		cout << endl;
+
+		switch (choice) {
+		case 1:
+			loadingBar();
+			grabFlight(flightLists, "flight.txt", true);
+			break;
+		case 2:
+			// View record
+			grabRecord(recordLists, "record.txt", true, "0");
+			break;
+		case 3:
+			// Search
+			break;
+		case 4:
+			// logout
+			chkpoint = true;
+			break;
+		default:
+			cout << "Please Enter the Valid Choice." << endl;
+			break;
+		}
+
+	} while (chkpoint == false);
 }
 
 void user_register() {
@@ -513,6 +553,7 @@ string minToHourMin(string duration) {
 	return flight_duration;
 }
 
+// decoration
 void loadingBar() {
 	system("COLOR 0e");
 	system("cls");
