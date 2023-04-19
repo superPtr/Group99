@@ -43,7 +43,7 @@ int main_menu(int& option);
 void user_menu(User user);
 void admin_menu();
 void user_register();
-void user_login();
+void user_login(bool chkAdmin);
 bool isValidNameOrPass(string nameOrPass);
 bool isValidEmail(const User& user);
 bool avoidSame(string nameOrEmail, const User(&userLists)[Max_Size]);
@@ -52,7 +52,9 @@ void grabFlight(Flight (&flightLists)[Max_Size], string fileName, bool goPrint);
 void grabRecord(Record (&recordLists)[Max_Size], string fileName, bool goPrint, string email);
 string toLower(string keyword);
 void user_search();
+void admin_search(int option);
 string minToHourMin(string duration);
+int adminSearchMenu();
 // decorations
 void loadingBar();
 
@@ -68,7 +70,7 @@ int main() {
 			user_register();
 		}
 		else if (option == 2) {
-			user_login();
+			user_login(false);
 		}
 		else if (option == 3) {
 			Flight flightLists[Max_Size];
@@ -76,7 +78,7 @@ int main() {
 			grabFlight(flightLists, "flight.txt", true);
 		}
 		else if (option == 4) {
-			// Admin Login
+			user_login(true);
 		}
 		else if (option == 5) {
 			chkpoint = true;
@@ -149,7 +151,7 @@ void user_menu(User user) {	// User user is current user's info
 }
 
 void admin_menu() {
-	int choice;
+	int choice, action = 0;
 	bool chkpoint = false;
 	Flight flightLists[Max_Size];
 	Record recordLists[Max_Size];
@@ -174,6 +176,19 @@ void admin_menu() {
 			break;
 		case 3:
 			// Search
+			action = adminSearchMenu();
+			if (action == 1) {
+				//flight id
+				admin_search(1);
+			}
+			else if (action == 2) {
+				//ticket id
+				admin_search(2);
+			}
+			else if (action == 3) {
+				// location
+				user_search();
+			}
 			break;
 		case 4:
 			// logout
@@ -227,7 +242,7 @@ void user_register() {
 	outFile.close();
 }
 
-void user_login() {
+void user_login(bool chkAdmin) {
 	User userLists[Max_Size];
 	grabUser(userLists);
 	int listLength = sizeof(userLists) / sizeof(userLists[0]);
@@ -241,18 +256,30 @@ void user_login() {
 	cout << "Enter password: ";
 	getline(cin, loginCred.password);
 
-	for (int i = 0; i < listLength; i++) {
-		if ((loginCred.username == userLists[i].username) && (loginCred.password == userLists[i].password)) {
-			chkLog = true;
-			User currentUser;
-			currentUser.username = userLists[i].username;
-			currentUser.email = userLists[i].email;
-			cout << "Successfuly Login!" << endl;
-			cout << endl;
-			user_menu(currentUser);
+	if (chkAdmin != true) {
+		for (int j = 3; j < listLength; j++) {
+			if ((loginCred.username == userLists[j].username) && (loginCred.password == userLists[j].password)) {
+				chkLog = true;
+				User currentUser;
+				currentUser.username = userLists[j].username;
+				currentUser.email = userLists[j].email;
+				cout << "Successfuly Login!" << endl;
+				cout << endl;
+				user_menu(currentUser);
+			}
 		}
 	}
-
+	else {
+		for (int i = 0; i < 3; i++) {
+			if ((loginCred.username == userLists[i].username) && (loginCred.password == userLists[i].password)) {
+				chkLog = true;
+				cout << "Welcome, Admin." << endl;
+				cout << endl;
+				admin_menu();
+			}
+		}
+	}
+	
 	if (chkLog == false) {
 		cout << "Username or Password is incorrect, please try again!" << endl;
 	}
@@ -541,6 +568,73 @@ void user_search() {
 
 }
 
+void admin_search(int option) {
+	string keyword;
+	bool flag = false;
+
+	if (option == 1) {
+		// flight id
+		Flight flightLists[Max_Size];
+		grabFlight(flightLists, "flight.txt", false);
+
+		cout << "Enter Flight ID: ";
+		cin >> keyword;
+		cout << endl;
+		for (int i = 0; i < Max_Size; i++) {
+			if (keyword == flightLists[i].flight_id) {
+				cout << setw(8) << left << flightLists[i].flight_id;
+				cout << setw(12) << left << flightLists[i].from_location;
+				cout << setw(12) << left << flightLists[i].to_location;
+				cout << setw(10) << left << flightLists[i].departure_time;
+				cout << setw(6) << left << flightLists[i].arrival_time;
+				cout << setw(14) << left << flightLists[i].flight_duration;
+				cout << setw(9) << left << flightLists[i].flight_price_eco;
+				cout << setw(10) << left << flightLists[i].numSeats_eco;
+				cout << setw(9) << left << flightLists[i].flight_price_bus;
+				cout << setw(10) << left << flightLists[i].numSeats_bus << endl;
+
+				flag = true;
+			}
+		}
+
+		if (flag == false) {
+			cout << "There is no such Flight ID in the record!" << endl;
+		}
+
+	}
+	else {
+		// ticket id
+		Record recordLists[Max_Size];
+		grabRecord(recordLists, "record.txt", false, "0");
+
+		cout << "Enter Ticket ID: ";
+		cin >> keyword;
+		cout << endl;
+
+		for (int j = 0; j < Max_Size; j++) {
+			if (keyword == recordLists[j].ticket_id) {
+				cout << setw(10) << left << recordLists[j].ticket_id;
+				cout << setw(8) << left << recordLists[j].flightInfo.flight_id;
+				cout << setw(4) << left << recordLists[j].class_id;
+				cout << setw(10) << left << recordLists[j].flightInfo.departure_time;
+				cout << setw(6) << left << recordLists[j].flightInfo.arrival_time;
+				cout << setw(6) << left << recordLists[j].flightInfo.flight_duration;
+				cout << setw(10) << left << recordLists[j].flightInfo.departure_day;
+				cout << setw(20) << left << recordLists[j].name;
+				cout << setw(12) << left << recordLists[j].contact_num;
+				cout << setw(20) << left << recordLists[j].email << endl;
+
+				flag = true;
+			}
+		}
+
+		if (flag == false) {
+			cout << "There is no such Ticket ID in the record!" << endl;
+		}
+	}
+
+}
+
 string minToHourMin(string duration) {
 	int hour, min, temp_min;
 	string temp_duration = duration;
@@ -551,6 +645,18 @@ string minToHourMin(string duration) {
 	flight_duration = to_string(hour) + "hour(s) " + to_string(min) + "min(s)";
 
 	return flight_duration;
+}
+
+int adminSearchMenu() {
+	int option;
+	cout << "Search by: " << endl;
+	cout << "1. Flight ID" << endl;
+	cout << "2. Ticket ID" << endl;
+	cout << "3. Location" << endl;
+	cout << "Enter option: ";
+	cin >> option;
+
+	return option;
 }
 
 // decoration
@@ -581,3 +687,4 @@ void loadingBar() {
 
 	system("cls");
 }
+
