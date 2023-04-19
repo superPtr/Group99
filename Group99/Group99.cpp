@@ -55,6 +55,8 @@ void user_search();
 void admin_search(int option);
 string minToHourMin(string duration);
 int adminSearchMenu();
+int adminUpdateMenu();
+void admin_update(int section);
 // decorations
 void loadingBar();
 
@@ -657,6 +659,88 @@ int adminSearchMenu() {
 	cin >> option;
 
 	return option;
+}
+
+int adminUpdateMenu() {
+	int section;
+	cout << "1. Departure Location" << endl;
+	cout << "2. Arriaval Location" << endl;
+	cout << "3. Departure Day" << endl;
+	cout << "4. Departure Time" << endl;
+	cout << "5. Arrival Time" << endl;
+	cout << "6. Flight Duration" << endl;
+	cout << "7. Price(Eco)" << endl;
+	cout << "8. Available Seats(Eco)" << endl;
+	cout << "9. Price(Bus)" << endl;
+	cout << "10. Available Seats(Bus)" << endl;
+	cout << "Enter which part of the record that want to update: ";
+	cin >> section;
+	cout << endl;
+
+	return section;
+}
+
+void admin_update(int section) {
+	string flightID, temp;
+	Flight flightLists[Max_Size];
+
+	grabFlight(flightLists, "flight.txt", false);
+
+	cout << "Enter Flight ID of the record: ";
+	cin >> flightID;
+	cout << endl;
+
+	for (int i = 0; i < Max_Size; i++) {
+		if (flightID == flightLists[i].flight_id) {
+			cout << "Enter data: ";
+			cin >> temp;
+			if ((section - 1) == 0) {
+				flightLists[i].from_location = temp;
+			}
+			else if ((section - 1) == 1) {
+				flightLists[i].to_location = temp;
+			}
+			else if ((section - 1) == 2) {
+				flightLists[i].departure_day = temp;
+			}
+			else if ((section - 1) == 3) {
+				flightLists[i].departure_time = temp;
+			}
+			else if ((section - 1) == 4) {
+				flightLists[i].arrival_time = temp;
+			}
+			else if ((section - 1) == 5) {
+				flightLists[i].flight_duration = temp;
+			}
+			else if ((section - 1) == 6) {
+				flightLists[i].flight_price_eco = temp;
+			}
+			else if ((section - 1) == 7) {
+				flightLists[i].numSeats_eco = temp;
+			}
+			else if ((section - 1) == 8) {
+				flightLists[i].flight_price_bus = temp;
+			}
+			else if ((section - 1) == 9) {
+				flightLists[i].numSeats_bus = temp;
+			}
+			else {
+				cout << "Unable to Update!" << endl;
+			}
+		}
+		else {
+			cout << "Flight ID is invalid!" << endl;
+		}
+	}
+
+	ofstream outFile;
+	outFile.open("record.txt");
+	if (outFile.fail()) {
+		cout << "Unable to Update!" << endl;
+	}
+	else {
+		// todo
+	}
 }
 
 // decoration
