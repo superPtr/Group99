@@ -43,10 +43,12 @@ struct Record {
 string generateID(string to_location, string from_location, int selection);
 int main_menu(int& option);
 void user_menu(User user);
+void booking_menu();
 void admin_menu();
 int adminMenu_flight();
 void user_register();
 void user_login(bool chkAdmin);
+void user_booking(int selection);
 bool isValidNameOrPass(string nameOrPass);
 bool isValidEmail(const User& user);
 bool avoidSame(string nameOrEmail, const User(&userLists)[Max_Size]);
@@ -156,6 +158,23 @@ void user_menu(User user) {	// User user is current user's info
 		}
 	} while (chkpoint == false);
 
+}
+
+void booking_menu() {
+	int selection, temp_flightID;
+
+	Flight flightLists[Max_Size];
+	grabFlight(flightLists, "flight.txt", true);
+
+	cout << endl;
+	cout << "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n";
+	cout << setw(50) << "Welcome to flight reservation system." << endl;
+	cout << ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n";
+	cout << " PRESS 1-------BOOKING" << endl;
+	cout << " PRESS 2-------EXIT TO MENU" << endl;
+	cout << "\nEnter Selection: ";
+	cin >> selection;
+	
 }
 
 void admin_menu() {
@@ -408,6 +427,37 @@ void user_login(bool chkAdmin) {
 	}
 
 
+}
+
+void user_bookint(int selection) {
+	Flight flightLists[Max_Size];
+	grabFlight(flightLists, "flight.txt", false);
+	string temp_id, temp_name, temp_contact;
+	int count;
+	int classID;
+	count = countLine("flight.txt");
+
+	if (selection == 1) {
+		cout << "Enter Flight ID: ";
+		cin >> temp_id;
+
+		for (int i = 0; i < count; i++) {
+			if (temp_id == flightLists[i].flight_id) {
+				cout << "Select Class: Economy or Business." << endl;
+				cout << "1. Economy" << endl;
+				cout << "2. Business" << endl;
+				cout << "Enter 1 or 2:";
+				cin >> classID;
+				cout << endl;
+				cin.ignore(256, '\n');
+				cout << "Enter Full Name: ";
+				getline(cin, temp_name, '\n');
+				cout << "\nEnter Contact Number: ";
+				getline(cin, temp_contact);
+				// todo
+			}
+		}
+	}
 }
 
 int countLine(string file_name) {
