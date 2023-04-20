@@ -13,3 +13,7 @@ MY012ID|Malaysia|Indonesia|Friday|1800|1855|55|368|103|1104|35|
 MY013SG|Malaysia|Singapore|Friday|0900|1000|60|400|103|1200|35|
 VN014MY|Vietnam|Malaysia|Saturday|1300|1445|105|700|103|2100|35|
 TL015MM|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
+000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
+000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
+000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
+000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
