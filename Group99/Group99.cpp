@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <Windows.h> //decoration purpose - system
 #include <stdio.h> //decoration purpose - printf
+#include <cstdlib> 
 using namespace std;
 
 const int Max_Size = 100;
@@ -39,6 +40,7 @@ struct Record {
 	string email;
 };
 
+string generateID(string to_location, string from_location, int selection);
 int main_menu(int& option);
 void user_menu(User user);
 void admin_menu();
@@ -60,6 +62,7 @@ int adminUpdateMenu();
 void admin_update(int section);
 int countLine(string file_name);
 void drop(bool chkAdm, int selection);
+void addFlight();
 // decorations
 void loadingBar();
 
@@ -182,6 +185,12 @@ void admin_menu() {
 			else if (section == 2) {
 				drop(true, 1);
 			}
+			else if (section == 3) {
+				addFlight();
+			}
+			else {
+				cout << "Invalid!" << endl;
+			}
 			break;
 		case 2:
 			// View record
@@ -221,11 +230,99 @@ int adminMenu_flight() {
 	cout << endl;
 	cout << "Press 1 to Update Specific Record" << endl;
 	cout << "Press 2 to Delete Specific Record" << endl;
-	cout << "Press any character to return back except 1&2" << endl;
+	cout << "Press 3 to Add New Record" << endl;
+	cout << "Press any character to return back except 1 & 2 & 3." << endl;
 	cout << "Enter option: ";
 	cin >> action2;
 
 	return action2;
+}
+
+string generateID(string from_location, string to_location, int selection) {
+	string temp, temp2, temp3, id;
+	int randNum = rand() % 900 + 100;	// generate 3-digit numbers
+	
+	if (selection == 1) {
+		//temp
+		if (toLower(from_location) == "brunei") {
+			temp = "BN";
+		}
+		else if (toLower(from_location) == "comboida") {
+			temp = "KH";
+		}
+		else if (toLower(from_location) == "east timor") {
+			temp = "TL";
+		}
+		else if (toLower(from_location) == "indonesia") {
+			temp = "ID";
+		}
+		else if (toLower(from_location) == "laos") {
+			temp = "LA";
+		}
+		else if (toLower(from_location) == "malaysia") {
+			temp = "MY";
+		}
+		else if (toLower(from_location) == "myanmar") {
+			temp = "MM";
+		}
+		else if (toLower(from_location) == "philippines") {
+			temp = "PH";
+		}
+		else if (toLower(from_location) == "singapore") {
+			temp = "SG";
+		}
+		else if (toLower(from_location) == "thailand") {
+			temp = "TH";
+		}
+		else if (toLower(from_location) == "vietam") {
+			temp = "VN";
+		}
+		else {
+			temp = "XX";
+		}
+		// temp2
+		if (toLower(to_location) == "brunei") {
+			temp2 = "BN";
+		}
+		else if (toLower(to_location) == "comboida") {
+			temp2 = "KH";
+		}
+		else if (toLower(to_location) == "east timor") {
+			temp2 = "TL";
+		}
+		else if (toLower(to_location) == "indonesia") {
+			temp2 = "ID";
+		}
+		else if (toLower(to_location) == "laos") {
+			temp2 = "LA";
+		}
+		else if (toLower(to_location) == "malaysia") {
+			temp2 = "MY";
+		}
+		else if (toLower(to_location) == "myanmar") {
+			temp2 = "MM";
+		}
+		else if (toLower(to_location) == "philippines") {
+			temp2 = "PH";
+		}
+		else if (toLower(to_location) == "singapore") {
+			temp2 = "SG";
+		}
+		else if (toLower(to_location) == "thailand") {
+			temp2 = "TH";
+		}
+		else if (toLower(to_location) == "vietam") {
+			temp2 = "VN";
+		}
+		else {
+			temp2 = "XX";
+		}
+
+		temp3 = to_string(randNum);
+		id = temp + temp3 + temp2;
+	}
+	
+	return id;
 }
 
 void user_register() {
@@ -930,6 +1027,58 @@ void drop(bool chkAdm, int selection) {
 	else {
 		//user
 	}
+}
+
+void addFlight() {
+	Flight newFlight;
+	string tempID;
+	ofstream outFile;
+	outFile.open("flight.txt", ios::app);
+
+	cout << setw(30) << "Schedule A Flight" << endl;
+	cout << "*****************************************" << endl;
+	cout << endl;
+
+	if (!outFile.fail()) {
+		cin.ignore(256, '\n');
+		cout << "Enter Departure Location: ";
+		getline(cin, newFlight.from_location, '\n');
+		cout << "\nEnter Arrival Location: ";
+		getline(cin, newFlight.to_location, '\n');
+		cout << "\nEnter Day of Departure: ";
+		getline(cin, newFlight.departure_day, '\n');
+		cout << "\nEnter Departure Time: ";
+		getline(cin, newFlight.departure_time, '\n');
+		cout << "\nEnter Arrival Time: ";
+		getline(cin, newFlight.arrival_time, '\n');
+		cout << "\nEnter Duration of Flight: ";
+		getline(cin, newFlight.flight_duration, '\n');
+		cout << "\nEnter Price (Class: Economy): ";
+		getline(cin, newFlight.flight_price_eco, '\n');
+		cout << "\nEnter Number of Seats (Class: Economy): ";
+		getline(cin, newFlight.numSeats_eco, '\n');
+		cout << "\nEnter Price (Class: Business): ";
+		getline(cin, newFlight.flight_price_bus, '\n');
+		cout << "\nEnter NUmber of Seats (Class: Business: ";
+		getline(cin, newFlight.numSeats_bus, '\n');
+		cout << endl;
+
+		tempID = generateID(newFlight.from_location, newFlight.to_location, 1);
+		newFlight.flight_id = tempID;
+
+		outFile << newFlight.flight_id << "|" << newFlight.from_location << "|" << newFlight.to_location << "|" << newFlight.departure_day << "|"
+			<< newFlight.departure_time << "|" << newFlight.arrival_time << "|" << newFlight.flight_duration << "|" << newFlight.flight_price_eco
+			<< "|" << newFlight.numSeats_eco << "|" << newFlight.flight_price_bus << "|" << newFlight.numSeats_bus << "|" << endl;
+
+
+		cout << "****************************************" << endl;
+		cout << "*Flight information has been updated. *" << endl;
+		cout << "****************************************" << endl;
+	}
+	else {
+		cout << "Unable To Add Record!" << endl;
+	}
+	outFile.close();
 }
 
 // decoration
