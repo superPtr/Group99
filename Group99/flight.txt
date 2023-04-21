@@ -1,4 +1,4 @@
-BN001KH|Brunei|Combodia|Monday|1000|1213|133|888|103|2664|35|
+BN001KH|Brunei|Combodia|Monday|1000|1213|133|888|103|2664|36|
 KH002TL|Comboida|East Timor|Tuesday|1300|1640|220|1464|103|4392|35|
 TL003ID|East Timor|Indonesia|Tuesday|0800|0955|115|768|103|2304|35|
 ID004LA|Indonesia|Laos|Wednesday|0930|1536|365|2432|103|7296|35|
@@ -12,9 +12,9 @@ VN011BN|Vietnam|Brunei|Friday|1100|1700|360|2400|103|7200|35|
 MY012ID|Malaysia|Indonesia|Friday|1800|1855|55|368|103|1104|35|
 MY013SG|Malaysia|Singapore|Friday|0900|1000|60|400|103|1200|35|
 VN014MY|Vietnam|Malaysia|Saturday|1300|1445|105|700|103|2100|35|
-TL015MM|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
+TL015MM|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|34|
 000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
 000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
 000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
 000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
-MY141TH|Malaysia|Thailand|Wednesday|0800|1000|120|666|103|1111|35|
+MY141TH|Malaysia|Thailand|Wednesday|0800|1000|120|666|96|1111|30|
