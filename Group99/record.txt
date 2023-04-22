@@ -1,6 +1,7 @@
-ABX625GHF|MY141TH|1|Wednesday|0800:1000:120|1|0|666|weq|231|ptr059@gmail.com|
+000000|MY141TH|1|Wednesday|0800:1000:120|1|0|666|weq|231|ptr059@gmail.com|
 000000|MY141TH|1|Wednesday|0800:1000:120|1|0|666|asda|123123|ptr059@gmail.com|
-POT581WWE|MY141TH|1|Wednesday|0800:1000:120|1|0|666|asd|123|ptr059@gmail.com|
+POT581WWE|MY141TH|1|Wednesday|0800:1000:120|1|1|666|asd|123|ptr059@gmail.com|
 000000|MY141TH|1|Wednesday|0800:1000:120|1|0|666|zxcz|123|ptr059@gmail.com|
-000000|MY141TH|2|Wednesday|0800:1000:120|1|0|1111|zxxcz|123|ptr059@gmail.com|
-000000|MY141TH|2|Wednesday|0800:1000:120|1|0|1111|sad|312|ptr059@gmail.com|
+000000|MY141TH|2|Wednesday|0800:1000:120|1|0|666|zxxcz|123|ptr059@gmail.com|
+000000|MY141TH|2|Wednesday|0800:1000:120|1|0|666|sad|312|ptr059@gmail.com|
+000000|SG270TH|2|Monday|1600:1800:120|1|1|666|pp|123123123|ptr059@gmail.com|
