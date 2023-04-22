@@ -17,4 +17,6 @@ TL015MM|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|34|
 000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
 000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
 000000|East Timor|Myanmar|Saturday|0830|1343|313|2088|103|6264|35|
-MY141TH|Malaysia|Thailand|Wednesday|0800|1000|120|666|69|1111|18|
+MY141TH|Malaysia|Thailand|Wednesday|0800|1000|120|666|66|1111|17|
+000000|Malaysia|Myanmar|Friday|1800|1900|60|112|221|113|331|
+000000|Malaysia|Thailand|Monday|1400|1600|120|120|103|480|35|
