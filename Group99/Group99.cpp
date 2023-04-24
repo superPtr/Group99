@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <Windows.h> //decoration purpose 
 #include <stdio.h> //decoration purpose 
-#include <cstdlib> 
+#include <cstdlib>  //decoration purpose
 using namespace std;
 
 const int Max_Size = 100;
@@ -76,6 +76,7 @@ void addFlight();
 void loadingBar();
 void endMenu();
 
+// main here
 int main() {
 	/*Decoration Start*/
 	// Get the console output handle
@@ -137,7 +138,7 @@ int main() {
 
 /* Functions for Validation or Convertion of Data*/
 string convertClassID(int classID) {
-	// convert class id to its relevant meaning (from int to string) [classID is 1 -> Economy Class, classID is 2 ->Business Class]
+	// convert class id to its relevant meaning (from int to string) [ is classID is 1 -> Economy Class, if classID is 2 ->Business Class]
 	// parameter: classID is the class id of the relevant record
 	string className;
 
@@ -152,7 +153,7 @@ string convertClassID(int classID) {
 }
 
 string convertPaymentStatus(int status) {
-	// convert payment status to its relevant meaning (from int to string) [0=Unpaid, 1=Paid]
+	// convert payment status to its relevant meaning (from int to string) [if 0=Unpaid, if 1=Paid]
 	// parameter: status is the payment status of the specific record
 	string payStatus;
 
@@ -167,7 +168,7 @@ string convertPaymentStatus(int status) {
 }
 
 string toLower(string keyword) {
-	// let the string be lowercase, based on subtraction of ASCII codes in specific range 
+	// let the string to be lowercase, based on subtraction of ASCII codes in specific range 
 	// parameter: keyword is the string that gonna to be lowercase
 	string words = keyword;
 
@@ -183,14 +184,13 @@ string toLower(string keyword) {
 string generateID(string from_location, string to_location, int selection) {
 	// generate a random id based on condition given
 	// parameter: from_location & to_location are the conditions
-	// parameter: selection is also consider as condition to use which method for generating id 
+	// parameter: selection is also consider as condition for choosing which method to generate id 
 	srand(time(0));
 	string temp, temp2, temp3, id;
-	int randNum = rand() % 900 + 100;	// generate 3-digit numbers
+	int randNum = rand() % 900 + 100;	// random generate 3-digit numbers
 	int randNum2 = 0;
 
 	if (selection == 1) {
-
 		//temp
 		if (toLower(from_location) == "brunei") {
 			temp = "BN";
@@ -265,12 +265,12 @@ string generateID(string from_location, string to_location, int selection) {
 		else {
 			temp2 = "XX";
 		}
-
+		// combine them to get the id
 		temp3 = to_string(randNum);
 		id = temp + temp3 + temp2;
 	}
 	else {
-		randNum2 = rand() % 6 + 1;	// generate a 1 digit random num in range of 1 to 6
+		randNum2 = rand() % 6 + 1;	// random generate a 1 digit random num in range of 1 to 6
 		// temp
 		if (randNum2 == 1) {
 			temp = "ABX";
@@ -300,7 +300,7 @@ string generateID(string from_location, string to_location, int selection) {
 			temp = "XXX";
 			temp2 = "XXX";
 		}
-
+		// combine them to get the id
 		temp3 = to_string(randNum);
 		id = temp + temp3 + temp2;
 	}
@@ -309,11 +309,11 @@ string generateID(string from_location, string to_location, int selection) {
 }
 
 bool isValidCreditCard(char creditCard[], int size) {
-	// a validation for checking credit card numbers is all 11 digits
+	// a validation for checking credit card numbers is whether all 11 digits
 	// parameter: creditCard[] is the char array included 11 digits of credit card num
-	// parameter: size is size of char array which also the element that used to exclude '\0' of c-string
+	// parameter: size is size of char array 
 	for (int i = 0; i < size - 1; i++) {
-		if (!isdigit(creditCard[i])) {
+		if (!isdigit(creditCard[i])) {		// if the credit card is in wrong format
 			return false;
 		}
 	}
@@ -322,7 +322,7 @@ bool isValidCreditCard(char creditCard[], int size) {
 }
 
 int countLine(string file_name) {
-	// to count how many lines of records in the relevant file
+	// to count how many lines of records in the relevant files
 	// parameter: file_name is the specific file to be counted
 	int count = 0;
 	string line;
@@ -346,13 +346,13 @@ bool isValidNameOrPass(string nameOrPass) {
 	bool chkSpace = true;
 
 	for (int i = 0; i < nameOrPass.length(); i++) {
-		if (isalpha(nameOrPass[i])) {
+		if (isalpha(nameOrPass[i])) {		// check whether is alphabet
 			chkAlpha = true;
 		}
-		else if (isdigit(nameOrPass[i])) {
+		else if (isdigit(nameOrPass[i])) {		// check whether is digit
 			chkNum = true;
 		}
-		else if (isspace(nameOrPass[i])) {
+		else if (isspace(nameOrPass[i])) {		// check whether is space
 			chkSpace = false;
 		}
 	}
@@ -361,9 +361,9 @@ bool isValidNameOrPass(string nameOrPass) {
 }
 
 bool isValidEmail(const User& user) {
-	// to check input is a email or not by validatin ghether has symbol of '@' and '.'
+	// to check input is a email or not by validation whether has symbol of '@' and '.'
 	// parameter: user is based on struct datatype -  User (reference)
-	bool chk = isValidNameOrPass(user.email);
+	bool chk = isValidNameOrPass(user.email);		// as validation to avoid input has space
 	bool chk2 = false;
 	bool chk3 = false;
 	for (int i = 0; i < user.email.length(); i++) {
@@ -379,12 +379,12 @@ bool isValidEmail(const User& user) {
 }
 
 bool avoidSame(string nameOrEmail, const User(&userLists)[Max_Size]) {
-	// a validation to avoid the confliction of haveing same username or email within the database
-	// parameter with reference on userLists and nameOrEmail (username or email)
+	// a validation to avoid the confliction of haveing same username or email within the database (cansider as text file in this case) 
+	// parameter with reference on userLists and nameOrEmail (means username or email)
 	bool chk = true;
 	bool chk2 = true;
 
-	int listLength = sizeof(userLists) / sizeof(userLists[0]);
+	int listLength = sizeof(userLists) / sizeof(userLists[0]);		// to get the size of array
 
 	for (int i = 0; i < listLength; i++) {
 		if (nameOrEmail == userLists[i].username) {
@@ -399,15 +399,15 @@ bool avoidSame(string nameOrEmail, const User(&userLists)[Max_Size]) {
 }
 
 string minToHourMin(string duration) {
-	// convert mins to hours and mins
-	// parameters duration is the variable stored with mins
+	// convert mins to hours and mins format
+	// parameter: duration is the variable stored with mins
 	int hour, min, temp_min;
 	string temp_duration = duration;
 	string flight_duration;
 	temp_min = stoi(duration);	// convert string to int
 	hour = temp_min / 60;
 	min = temp_min % 60;
-	flight_duration = to_string(hour) + "h" + to_string(min) + "m";		// concatenate
+	flight_duration = to_string(hour) + "h" + to_string(min) + "m";		// concatenate 
 
 	return flight_duration;
 }
@@ -443,6 +443,7 @@ G99 Airline                              /   .'
 }
 
 void endMenu() {
+	// decoration for termination of program
 	cout << R"(                            .''.       
        .''.      .        *''*    :_\/_:     . 
       :_\/_:   _\(/_  .:.*_\/_*   : /\ :  .'.:.'.
@@ -457,6 +458,7 @@ void endMenu() {
 }
 
 void user_menu(User user) {	// User user is current user's info
+	// menu for user once they successfully login into system
 	int choice;
 	bool chkpoint = false;
 	User currUser;
@@ -521,7 +523,7 @@ void user_menu(User user) {	// User user is current user's info
 		case 5:		// logout
 			chkpoint = true;
 			break;
-		default:
+		default:	// error handling
 			cout << "\n\n\t\tPlease Enter the Valid Choice." << endl;
 			Sleep(800);
 			system("cls");
@@ -531,8 +533,9 @@ void user_menu(User user) {	// User user is current user's info
 
 }
 
-void booking_menu(string email, int option) {	
-	// parameter option - 1 for booking&pay, 2 only pay for unpaid
+void booking_menu(string email, int option) {
+	// menu for booking
+	// parameter option - if 1 for booking&pay, if 2 only pay for unpaid
 	int selection1, selection2;
 
 	if (option == 1) {
@@ -545,7 +548,7 @@ void booking_menu(string email, int option) {
 		cout << "\n\t->Enter Selection: ";
 		cin >> selection1;
 
-		if (selection1 == 1) {
+		if (selection1 == 1) {		// go for booking process
 			user_booking(1, email);
 		}
 	}
@@ -560,10 +563,10 @@ void booking_menu(string email, int option) {
 		cout << "\n\t->Enter Selection: ";
 		cin >> selection2;
 
-		if (selection2 == 1) {
+		if (selection2 == 1) {		// go for booking process
 			user_booking(2, email);
 		}
-		else if (selection2 == 2) {
+		else if (selection2 == 2) {		// go for delete record process
 			drop(2);
 			system("pause");
 		}
@@ -573,6 +576,7 @@ void booking_menu(string email, int option) {
 }
 
 void admin_menu() {
+	// menu for admin once they successfully login into system
 	int choice, action = 0, section, section2;
 	bool chkpoint = false;
 	Flight flightLists[Max_Size];
@@ -643,7 +647,7 @@ void admin_menu() {
 			// logout
 			chkpoint = true;
 			break;
-		default:
+		default:	// error handling
 			cout << "\n\n\t\tPlease Enter the Valid Choice." << endl;
 			Sleep(800);
 			system("cls");
@@ -654,6 +658,7 @@ void admin_menu() {
 }
 
 void adminMenu_Drop() {
+	// menu for delete record
 	int selection = 0;
 
 	cout << endl;
@@ -665,12 +670,13 @@ void adminMenu_Drop() {
 	cout << "\n\t\t->Enter Selection: ";
 	cin >> selection;
 
-	if (selection == 1) {
+	if (selection == 1) {		// go for delete process
 		drop(2);
 	}
 }
 
 int adminMenu_flight() {
+	// menu while viewing the flight info
 	int action2;
 
 	cout << endl;
@@ -685,6 +691,7 @@ int adminMenu_flight() {
 }
 
 int adminSearchMenu() {
+	// menu while searching specific record
 	int option;
 	cout << "\n\t\tSearch by: " << endl;
 	cout << "\t\t1. Flight ID" << endl;
@@ -697,9 +704,10 @@ int adminSearchMenu() {
 }
 
 int adminUpdateMenu() {
+	// menu for admin while updating some records
 	int section;
 	cout << "\t\t1. Departure Location" << endl;
-	cout << "\t\t2. Arriaval Location" << endl;
+	cout << "\t\t2. Arrival Location" << endl;
 	cout << "\t\t3. Departure Day" << endl;
 	cout << "\t\t4. Departure Time" << endl;
 	cout << "\t\t5. Arrival Time" << endl;
@@ -715,7 +723,7 @@ int adminUpdateMenu() {
 	return section;
 }
 
-/*Functions to Do Specific Purpose*/
+/*Functions - to Do Specific Purpose*/
 void grabUser(User(&userLists)[Max_Size]) {
 	// to grab the records from user.txt
 	int count = 0;
@@ -724,7 +732,7 @@ void grabUser(User(&userLists)[Max_Size]) {
 	inFile.open("user.txt");
 
 	while (!inFile.eof()) {
-		getline(inFile, userLists[count].username, '|');
+		getline(inFile, userLists[count].username, '|');	// with delimeter '|', due to storing format in txt file
 		getline(inFile, userLists[count].password, '|');
 		getline(inFile, userLists[count].email, '|');
 
@@ -748,7 +756,7 @@ void grabFlight(Flight(&flightLists)[Max_Size], string fileName, bool goPrint) {
 	}
 	else {
 		while (!inFile.eof()) {
-			getline(inFile, flightLists[count].flight_id, '|');
+			getline(inFile, flightLists[count].flight_id, '|');		// with delimeter '|', due to storing format in txt file
 			getline(inFile, flightLists[count].from_location, '|');
 			getline(inFile, flightLists[count].to_location, '|');
 			getline(inFile, flightLists[count].departure_day, '|');
@@ -766,16 +774,16 @@ void grabFlight(Flight(&flightLists)[Max_Size], string fileName, bool goPrint) {
 		}
 		if (goPrint == true) {
 			cout << setw(9) << left << "ID";		// flight id
-			cout << setw(13) << left << "From";		//from_location
-			cout << setw(13) << left << "To";		//to_location
-			cout << setw(11) << left << "DepartDay";		//departure_day
-			cout << setw(7) << right << "DepTime";		//arrival_time
-			cout << setw(9) << right << "ArrTime";		//flight_duration
-			cout << setw(10) << right << "Duration";		//flight_price_eco
-			cout << setw(11) << right << "Price-Eco";		//numSeats_eco
-			cout << setw(10) << right << "Seat-Eco";		//flight_price_bus
-			cout << setw(11) << right << "Price-Bus";		//numSeats_bus
-			cout << setw(10) << right << "Seat-Bus" << endl;
+			cout << setw(13) << left << "From";		// departure location
+			cout << setw(13) << left << "To";		// arrival location
+			cout << setw(11) << left << "DepartDay";		// departure_day
+			cout << setw(7) << right << "DepTime";		// departure time
+			cout << setw(9) << right << "ArrTime";		// arrival time
+			cout << setw(10) << right << "Duration";		// flight duration
+			cout << setw(11) << right << "Price-Eco";		// Price of Economy Class 
+			cout << setw(10) << right << "Seat-Eco";		// Number Seats of Economy Class
+			cout << setw(11) << right << "Price-Bus";		// Price of Business Class
+			cout << setw(10) << right << "Seat-Bus" << endl;		// Number Seats of Business Class
 			cout << "-------------------------------------------------------------------------------------------------------------------" << endl;
 			for (int i = 0; i < (count - 1); i++) {
 				if (flightLists[i].flight_id != "000000") {
@@ -785,7 +793,7 @@ void grabFlight(Flight(&flightLists)[Max_Size], string fileName, bool goPrint) {
 					cout << setw(11) << left << flightLists[i].departure_day;
 					cout << setw(7) << right << flightLists[i].departure_time;
 					cout << setw(9) << right << flightLists[i].arrival_time;
-					string duration = minToHourMin(flightLists[i].flight_duration);		// convert mins to hours&min
+					string duration = minToHourMin(flightLists[i].flight_duration);		// convert mins to hours&min format
 					cout << setw(10) << right << duration;
 					cout << setw(11) << right << flightLists[i].flight_price_eco;
 					cout << setw(10) << right << flightLists[i].numSeats_eco;
@@ -799,10 +807,10 @@ void grabFlight(Flight(&flightLists)[Max_Size], string fileName, bool goPrint) {
 }
 
 void grabRecord(Record(&recordLists)[Max_Size], string fileName, bool goPrint, string email, string viewBooking) {
-	// to grab all the records from record.txt
-	// parameterL fileName is about record.txt, goPrint is whether print or not(true to print, false to not print)
+	// to grab all the records from record.txt, it also available to allow print the records out or get the filtering records by email and payment status as keyword
+	// parameter: fileName is about record.txt, goPrint is whether print or not(true to print, false to not print)
 	// parameter: email is the current user's email(which will used for filtering the record), if no email then email = "0"
-	// parameter: viewBooking can be "0", "1", "2" which used to filter the record (0 means no filtering with payment status, 1 means payment status is unpaid, 2 means payment status is paid)
+	// parameter: viewBooking can be "0", "1", "2" which used to filter the record (0 means no filtering by payment status, 1 means filtering by payment status is unpaid, 2 means filtering by payment status is paid)
 	ifstream inFile;
 	inFile.open(fileName);
 
@@ -832,7 +840,7 @@ void grabRecord(Record(&recordLists)[Max_Size], string fileName, bool goPrint, s
 			count++;
 		}
 
-		if (goPrint == true) {
+		if (goPrint == true) {		// print the relevant records
 			cout << setw(11) << left << "ID";
 			cout << setw(9) << left << "FlightID";
 			cout << setw(7) << left << "Class";
@@ -851,15 +859,15 @@ void grabRecord(Record(&recordLists)[Max_Size], string fileName, bool goPrint, s
 				if (recordLists[i].ticket_id != "000000") {
 					cout << setw(11) << left << recordLists[i].ticket_id;
 					cout << setw(9) << left << recordLists[i].flightInfo.flight_id;
-					className = convertClassID(stoi(recordLists[i].class_id));
+					className = convertClassID(stoi(recordLists[i].class_id));		// return a string, purpose is to know which class
 					cout << setw(7) << left << className;
 					cout << setw(11) << left << recordLists[i].flightInfo.departure_day;
 					cout << setw(9) << left << recordLists[i].flightInfo.departure_time;
 					cout << setw(9) << left << recordLists[i].flightInfo.arrival_time;
-					duration = minToHourMin(recordLists[i].flightInfo.flight_duration);
+					duration = minToHourMin(recordLists[i].flightInfo.flight_duration);		// change the time format from mins to hour&mins
 					cout << setw(10) << left << duration;
 					cout << setw(8) << left << recordLists[i].ticNum;
-					payStatus = convertPaymentStatus(stoi(recordLists[i].payment_status));
+					payStatus = convertPaymentStatus(stoi(recordLists[i].payment_status));		// return a string, purpose is to know what is the current payment status
 					cout << setw(9) << left << payStatus;
 					cout << setw(8) << left << recordLists[i].totalBill;
 					cout << setw(20) << left << recordLists[i].name;
@@ -868,7 +876,7 @@ void grabRecord(Record(&recordLists)[Max_Size], string fileName, bool goPrint, s
 				}
 			}
 		}
-		else if ((goPrint == false) && (email != "0") && (viewBooking == "1")) {	// viewBooking = 1 means unpaid records (filtering) & filtering by email
+		else if ((goPrint == false) && (email != "0") && (viewBooking == "1")) {	// not to print the records that filtering by email and payment status.	viewBooking = 1 means unpaid records
 			bool chkEmpty = true;
 			string searchByEmail = email;
 			cout << setw(11) << left << "ID";
@@ -886,15 +894,15 @@ void grabRecord(Record(&recordLists)[Max_Size], string fileName, bool goPrint, s
 				if ((recordLists[j].email == searchByEmail) && (recordLists[j].ticket_id != "000000") && (recordLists[j].payment_status == "0")) {
 					cout << setw(11) << left << recordLists[j].ticket_id;
 					cout << setw(9) << left << recordLists[j].flightInfo.flight_id;
-					className = convertClassID(stoi(recordLists[j].class_id));
+					className = convertClassID(stoi(recordLists[j].class_id));		// return a string, purpose is to know which class
 					cout << setw(7) << left << className;
 					cout << setw(11) << left << recordLists[j].flightInfo.departure_day;
 					cout << setw(9) << left << recordLists[j].flightInfo.departure_time;
 					cout << setw(9) << left << recordLists[j].flightInfo.arrival_time;
-					duration = minToHourMin(recordLists[j].flightInfo.flight_duration);
+					duration = minToHourMin(recordLists[j].flightInfo.flight_duration);		// change the time format from mins to hour&mins
 					cout << setw(10) << left << duration;
 					cout << setw(8) << left << recordLists[j].ticNum;
-					payStatus = convertPaymentStatus(stoi(recordLists[j].payment_status));
+					payStatus = convertPaymentStatus(stoi(recordLists[j].payment_status));		// return a string, purpose is to know what is the current payment status
 					cout << setw(9) << left << payStatus;
 					cout << setw(8) << left << recordLists[j].totalBill << endl;
 
@@ -905,7 +913,7 @@ void grabRecord(Record(&recordLists)[Max_Size], string fileName, bool goPrint, s
 				cout << "\t\t\tYour Booking History is empty." << endl;
 			}
 		}
-		else if ((goPrint == false) && (email != "0") && (viewBooking == "2")) {		// viewBooking = 2 means paid records (filtering) & filtering by email
+		else if ((goPrint == false) && (email != "0") && (viewBooking == "2")) {		// not to print the records that filtering by email and payment status.		viewBooking = 2 means paid records (filtering) & filtering by email
 			bool chkEmpty = true;
 			string searchByEmail = email;
 			cout << setw(11) << left << "ID";
@@ -923,12 +931,12 @@ void grabRecord(Record(&recordLists)[Max_Size], string fileName, bool goPrint, s
 				if ((recordLists[j].email == searchByEmail) && (recordLists[j].ticket_id != "000000") && (recordLists[j].payment_status == "1")) {
 					cout << setw(11) << left << recordLists[j].ticket_id;
 					cout << setw(9) << left << recordLists[j].flightInfo.flight_id;
-					className = convertClassID(stoi(recordLists[j].class_id));
+					className = convertClassID(stoi(recordLists[j].class_id));			// return a string, purpose is to know which class
 					cout << setw(7) << left << className;
 					cout << setw(11) << left << recordLists[j].flightInfo.departure_day;
 					cout << setw(9) << left << recordLists[j].flightInfo.departure_time;
 					cout << setw(9) << left << recordLists[j].flightInfo.arrival_time;
-					duration = minToHourMin(recordLists[j].flightInfo.flight_duration);
+					duration = minToHourMin(recordLists[j].flightInfo.flight_duration);			// change the time format from mins to hour&mins
 					cout << setw(10) << left << duration;
 					cout << setw(8) << left << recordLists[j].totalBill;
 					cout << setw(20) << left << recordLists[j].name;
@@ -946,7 +954,7 @@ void grabRecord(Record(&recordLists)[Max_Size], string fileName, bool goPrint, s
 }
 
 bool payment(int totalBill) {
-	//  a process of payment, by checking the validation of credit card no and total amount
+	//  a process of payment, by checking the validation of credit card num and total amount
 	// parameter: totalBill means the total amount that need to pay by user
 	char creditCard[12];
 	int amount;
@@ -956,7 +964,7 @@ bool payment(int totalBill) {
 	cin.getline(creditCard, 12);
 	cout << endl;
 
-	if (isValidCreditCard(creditCard, 12)) {
+	if (isValidCreditCard(creditCard, 12)) {		// validation of credit card num, if format ok then process to pay
 		cout << "\tTotal Price: ";
 		cout << totalBill;
 		cout << "\n\t->Enter amount to pay: ";
@@ -971,18 +979,19 @@ bool payment(int totalBill) {
 }
 
 void seatDeduction(string flightID, int tickNum, int classID) {
-	// this function is used to deduct the numbers of available seats based on class once the booking is done
-	// parameter: flightID is the id for the records in flight,txt, tickNum is ticket number bought by user, classID is the id for class(Eco or Bus)
+	// this function is used to deduct the numbers of available seats based on class category once the booking is done
+	// parameter: flightID is the id for the records in flight.txt, tickNum is ticket amount bought by user, classID is the id for class(Eco or Bus)
 	Flight flightLists[Max_Size];
-	grabFlight(flightLists, "flight.txt", false);
+	grabFlight(flightLists, "flight.txt", false);		// grab records from flight.txt
 	Record recordLists[Max_Size];
-	grabRecord(recordLists, "record.txt", false, "0", "0");
+	grabRecord(recordLists, "record.txt", false, "0", "0");		// grab records from record.txt
 	int count, count2, temp;
-	count = countLine("flight.txt");
+	count = countLine("flight.txt");		// count how many records within ? file
 	count2 = countLine("record.txt");
 
 	for (int i = 0; i < count; i++) {
 		if (flightID == flightLists[i].flight_id) {
+			// get the current amount of avalaible seats (Eco or Bus) and deduct to amount of ticket bought by user
 			if (classID == 1) {
 				temp = stoi(flightLists[i].numSeats_eco);
 				temp = temp - tickNum;
@@ -996,6 +1005,7 @@ void seatDeduction(string flightID, int tickNum, int classID) {
 		}
 	}
 
+	// stored reords
 	ofstream outFile;
 	outFile.open("flight.txt");
 	for (int j = 0; j < count; j++) {
@@ -1008,11 +1018,13 @@ void seatDeduction(string flightID, int tickNum, int classID) {
 }
 
 void drop(int selection) {
-	// this function used to delete the record
-	// Note : if the id of record is "000000" is considered as deleted, which won't show to user or admin in this case (data is priceless)
-	// parameters is the conditon for choosing which specific process
+	// this function is used to delete the specific record
+	// Note: if the id of record is "000000" is considered as deleted, which won't show to user or admin in this case, no one able to view it in any way unless someone who can direct access to datebase (read from txt file)
+	// Note: that's the concept of delete in this case, thus please dont judge us on why the records is still existing in txt file
+	// Note: that's the way we do it for deleting, please dont deduct our marks due to our way of deleting compare to the standard concept of delete is slightly different
+	// parameter: selection is the conditon for choosing which specific process
 	// if selection is 1 means flight record will be deleted and all the relevant purchased ticket records is consider as invalid
-	// if selection is 2 means specific ticket record will be deleted and the number of available seat based on class(Eco or Bus) will +1
+	// if selection is 2 means specific ticket record will be deleted and the number of available seat based on class(Eco or Bus) will add back ticket amount
 	int count, count2;
 	count = countLine("flight.txt");
 	count2 = countLine("record.txt");
@@ -1035,17 +1047,17 @@ void drop(int selection) {
 				flightLists[i].flight_id = "000000";
 				for (int a = 0; a < count2; a++) {
 					if (temp == recordLists[a].flightInfo.flight_id) {
-						recordLists[a].ticket_id = "000000";
+						recordLists[a].ticket_id = "000000";		// record is deleted, id ="000000"
 					}
 				}
 				flag = true;
 			}
 		}
 
-		if (flag = false) {
+		if (flag = false) {		// error handling
 			cout << "Flight ID is invalid!" << endl;
 		}
-		else {
+		else {	// store record
 			ofstream outFile;
 			ofstream outFile2;
 			outFile.open("flight.txt");
@@ -1084,6 +1096,7 @@ void drop(int selection) {
 				recordLists[i].ticket_id = "000000";
 				for (int j = 0; j < count; j++) {
 					if (temp == flightLists[j].flight_id) {
+						// to add back seats
 						if (stoi(temp2) == 1) {	// eco
 							temp3 = stoi(flightLists[j].numSeats_eco);
 							temp3 += stoi(recordLists[i].ticNum);
@@ -1105,7 +1118,7 @@ void drop(int selection) {
 		if (flag == false) {
 			cout << "\t\tTicket ID is invalid!" << endl;
 		}
-		else {
+		else {	// store record
 			ofstream outFile, outFile2;
 			outFile.open("record.txt");
 			outFile2.open("flight.txt");
@@ -1124,6 +1137,7 @@ void drop(int selection) {
 
 			cout << "\t\tSuccessfully Deleted!" << endl;
 			outFile.close();
+			outFile2.close();
 		}
 	}
 }
@@ -1186,7 +1200,7 @@ void user_register() {
 	User userLists[Max_Size];
 	grabUser(userLists);
 
-	int listLength = sizeof(userLists) / sizeof(userLists[0]);
+	int listLength = sizeof(userLists) / sizeof(userLists[0]);		// size of array
 	bool toWrite = false;
 
 	ofstream outFile;
@@ -1204,13 +1218,13 @@ void user_register() {
 	getline(cin, user.email);
 	cout << endl;
 
-
+	// valid format: username or password must < 13 char length, username & email not having the same within database, email in right format
 	if ((user.username.length() < 13) && (user.password.length() < 13)) {
 		if ((isValidNameOrPass(user.username)) && (avoidSame(user.username, userLists)) && (isValidNameOrPass(user.password)) && (isValidEmail(user)) && (avoidSame(user.email, userLists))) {
 			toWrite = true;
 		}
 	}
-
+	// store record
 	if (toWrite == true) {
 		outFile << user.username << "|" << user.password << "|" << user.email << "|" << endl;
 		cout << "Registration Successful!" << endl;
@@ -1225,9 +1239,10 @@ void user_register() {
 }
 
 void user_login(bool chkAdmin) {
-	// fucntion to access specific menu by login 
+	// function to access specific menu by login 
 	// parameter: chkAdmin is a bool , used to clarified is user login or admin login
 	// if chkAdmin is false means is user login, if chkAdmin is true means is admin login
+	// only available 3 admins in this system
 	User userLists[Max_Size];
 	grabUser(userLists);
 	int listLength = sizeof(userLists) / sizeof(userLists[0]);
@@ -1241,7 +1256,7 @@ void user_login(bool chkAdmin) {
 	cout << "Enter password: ";
 	getline(cin, loginCred.password);
 
-	if (chkAdmin != true) {
+	if (chkAdmin != true) {		// user login
 		for (int j = 3; j < listLength; j++) {
 			if ((loginCred.username == userLists[j].username) && (loginCred.password == userLists[j].password)) {
 				chkLog = true;
@@ -1255,8 +1270,8 @@ void user_login(bool chkAdmin) {
 			}
 		}
 	}
-	else {
-		for (int i = 0; i < 3; i++) {
+	else {	// admin login
+		for (int i = 0; i < 3; i++) {		// first 3 row records is about admin credential info
 			if ((loginCred.username == userLists[i].username) && (loginCred.password == userLists[i].password)) {
 				chkLog = true;
 				cout << "Welcome, Admin." << endl;
@@ -1276,7 +1291,7 @@ void user_login(bool chkAdmin) {
 }
 
 void user_booking(int selection, string email) {
-	// function to let user booking
+	// function to let user booking 
 	// parameter: selection is the conditions for choosing which booking process
 	// selction is 1 means able to booking and pay, while selection is 2 means only allow to do a payment for unpaid payment/record
 	Flight flightLists[Max_Size];
@@ -1289,7 +1304,7 @@ void user_booking(int selection, string email) {
 	int classID, ticketNum, totalPrice;
 	count = countLine("flight.txt");
 
-	if (selection == 1) {
+	if (selection == 1) {	// booking and pay
 		cout << "\n\t->Enter Flight ID: ";
 		cin >> temp_id;
 
@@ -1308,7 +1323,7 @@ void user_booking(int selection, string email) {
 				cin >> ticketNum;
 				cin.ignore(256, '\n');
 
-				bookingRecord.ticket_id = generateID("no", "no", 2);
+				bookingRecord.ticket_id = generateID("no", "no", 2);		// generate a random id
 				bookingRecord.flightInfo.flight_id = temp_id;
 				bookingRecord.flightInfo.departure_time = flightLists[i].departure_time;
 				bookingRecord.flightInfo.arrival_time = flightLists[i].arrival_time;
@@ -1323,7 +1338,7 @@ void user_booking(int selection, string email) {
 					cout << "\n\t->Do you want to do payment now? [y/n]: ";
 					cin >> pay;
 					if ((pay == 'y') || (pay == 'Y')) {
-						if (payment(totalPrice)) {
+						if (payment(totalPrice)) {	// payment process
 							cout << "\t\t********************************" << endl;
 							cout << "\t\t*    Transaction Successful    *" << endl;
 							cout << "\t\t********************************" << endl;
@@ -1365,13 +1380,13 @@ void user_booking(int selection, string email) {
 			}
 		}
 		if (flag == true) {
-			seatDeduction(temp_id, ticketNum, classID);
+			seatDeduction(temp_id, ticketNum, classID);		// deduct the seats
 
 			Record recordLists[Max_Size];
 			grabRecord(recordLists, "record.txt", false, "0", "0");
 			ofstream outFile;
 			outFile.open("record.txt", ios::app);
-			if (!outFile.fail()) {
+			if (!outFile.fail()) {	// store record
 				outFile << bookingRecord.ticket_id << "|" << bookingRecord.flightInfo.flight_id << "|" << bookingRecord.class_id << "|" << bookingRecord.flightInfo.departure_day << "|"
 					<< bookingRecord.flightInfo.departure_time << ":" << bookingRecord.flightInfo.arrival_time << ":" << bookingRecord.flightInfo.flight_duration << "|" << ticketNum << "|" << bookingRecord.payment_status
 					<< "|" << totalPrice << "|" << bookingRecord.name << "|" << bookingRecord.contact_num << "|" << bookingRecord.email << "|" << endl;
@@ -1385,7 +1400,7 @@ void user_booking(int selection, string email) {
 		}
 
 	}
-	else if (selection == 2) {
+	else if (selection == 2) {	// pay for unpaid booking/record
 		string tempTicket;
 		bool chkflag = false;
 		int count = countLine("record.txt"), totalPrice;
@@ -1439,7 +1454,7 @@ void user_search() {
 	cout << "\n\t\t->Enter option: ";
 	cin >> option;
 
-	if (option == 1) {
+	if (option == 1) {	// departure
 		cout << "\n\t\t->Enter location: ";
 		cin >> keyword;
 		cout << endl;
@@ -1480,7 +1495,7 @@ void user_search() {
 			cout << "\t\t\t\tThere is no such location provided by us!" << endl;
 		}
 	}
-	else if (option == 2) {
+	else if (option == 2) {	// arrival
 		cout << "\n\t\t->Enter location: ";
 		cin >> keyword;
 		cout << endl;
@@ -1526,7 +1541,7 @@ void user_search() {
 }
 
 void admin_search(int option) {
-	// this function allow admin to search some flight record by entering keyword such as ticket id, flight id, departion location and arrival location
+	// this function allow admin to search some flight record by entering keyword such as ticket id, flight id
 	// will print the filtering records based on which keyword selected
 	string keyword;
 	bool flag = false;
@@ -1544,13 +1559,13 @@ void admin_search(int option) {
 		cout << setw(13) << left << "From";		//from_location
 		cout << setw(13) << left << "To";		//to_location
 		cout << setw(11) << left << "DepartDay";		//departure_day
-		cout << setw(7) << right << "DepTime";		//arrival_time
-		cout << setw(9) << right << "ArrTime";		//flight_duration
-		cout << setw(10) << right << "Duration";		//flight_price_eco
-		cout << setw(11) << right << "Price-Eco";		//numSeats_eco
-		cout << setw(10) << right << "Seat-Eco";		//flight_price_bus
-		cout << setw(11) << right << "Price-Bus";		//numSeats_bus
-		cout << setw(10) << right << "Seat-Bus" << endl;
+		cout << setw(7) << right << "DepTime";		//departure time
+		cout << setw(9) << right << "ArrTime";		//arrival time
+		cout << setw(10) << right << "Duration";		//flight duration
+		cout << setw(11) << right << "Price-Eco";		// price - eco
+		cout << setw(10) << right << "Seat-Eco";		// number of seats - eco
+		cout << setw(11) << right << "Price-Bus";		// price - bus
+		cout << setw(10) << right << "Seat-Bus" << endl;	// number of seats - bus
 		cout << "-------------------------------------------------------------------------------------------------------------------" << endl;
 		for (int i = 0; i < Max_Size; i++) {
 			if (keyword == flightLists[i].flight_id) {
@@ -1650,34 +1665,34 @@ void admin_update(int section) {
 			flag = true;
 			cout << "\t\t->Enter data: ";
 			cin >> temp;
-			if ((section - 1) == 0) {
+			if ((section - 1) == 0) {	// departure location
 				flightLists[i].from_location = temp;
 			}
-			else if ((section - 1) == 1) {
+			else if ((section - 1) == 1) {	// arrival location
 				flightLists[i].to_location = temp;
 			}
-			else if ((section - 1) == 2) {
+			else if ((section - 1) == 2) {		// departure day
 				flightLists[i].departure_day = temp;
 			}
-			else if ((section - 1) == 3) {
+			else if ((section - 1) == 3) {		// departure time
 				flightLists[i].departure_time = temp;
 			}
-			else if ((section - 1) == 4) {
+			else if ((section - 1) == 4) {		// arrival time
 				flightLists[i].arrival_time = temp;
 			}
-			else if ((section - 1) == 5) {
+			else if ((section - 1) == 5) {		// flight duration
 				flightLists[i].flight_duration = temp;
 			}
-			else if ((section - 1) == 6) {
+			else if ((section - 1) == 6) {		// price eco
 				flightLists[i].flight_price_eco = temp;
 			}
-			else if ((section - 1) == 7) {
+			else if ((section - 1) == 7) {		// seat eco
 				flightLists[i].numSeats_eco = temp;
 			}
-			else if ((section - 1) == 8) {
+			else if ((section - 1) == 8) {		// price bus
 				flightLists[i].flight_price_bus = temp;
 			}
-			else if ((section - 1) == 9) {
+			else if ((section - 1) == 9) {		// seat bus
 				flightLists[i].numSeats_bus = temp;
 			}
 			else {
@@ -1690,7 +1705,7 @@ void admin_update(int section) {
 	if (flag == false) {
 		cout << "\n\n\t\t\tFlight ID is invalid!" << endl;
 	}
-	else {
+	else { // store record
 		ofstream outFile;
 		outFile.open("flight.txt", ios::out);
 		if (outFile.fail()) {
@@ -1713,7 +1728,7 @@ void admin_update(int section) {
 /* Function for Decoration Purpose*/
 void loadingBar() {
 	// decoration only: loading bar
-	system("COLOR 0e");	// change color to yellow
+	system("COLOR 0e");	// change text color to yellow with black background
 	system("cls");
 
 	//Set ASCII to print special character. in this case is the bar(?) chart
