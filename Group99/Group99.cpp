@@ -404,7 +404,7 @@ string minToHourMin(string duration) {
 	int hour, min, temp_min;
 	string temp_duration = duration;
 	string flight_duration;
-	temp_min = stoi(duration);	// convert string to int
+	temp_min = stoi(temp_duration);	// convert string to int
 	hour = temp_min / 60;
 	min = temp_min % 60;
 	flight_duration = to_string(hour) + "h" + to_string(min) + "m";		// concatenate 
